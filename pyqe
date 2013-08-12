@@ -57,7 +57,6 @@ from Xlib import display
 class PyQe:
 
     def __init__(self, master):
-
         self.master = master
 
         # Startup position
@@ -111,7 +110,6 @@ class PyQe:
         self.executeCommand()
 
     def keyPress(self, event):
-
         if event.keysym == "Down":
 
             listbox_size = self.listbox.size()
@@ -130,7 +128,6 @@ class PyQe:
             self.listbox.see(self.listbox.curselection())
 
         elif event.keysym == "Up":
-
             listbox_size = self.listbox.size()
             listbox_maxpos = listbox_size - 1
 
@@ -150,7 +147,6 @@ class PyQe:
             self.master.destroy()
 
         elif event.keysym == "Tab":
-
             # Handle tab, send "break" back to stop the default action
             # to happen. In the future, maybe do something cool with
             # it...
@@ -160,26 +156,19 @@ class PyQe:
             # See if we can do an automatic match for commands with
             # similar names
             if commandName:
-
                 seekLongerMatch = 1
                 testStr = ""
 
                 testLen = len(commandName)
 
                 while seekLongerMatch == 1:
-
                     testStr = matches[0]
-
                     testStr = testStr[0:testLen]
-
                     debugMessage("Test length: %i, Test string: %s" % (testLen,testStr))
 
                     for match in matches:
-
                         debugMessage("  current: " + match)
-
                         matchSnippet = match[0:testLen]
-
                         debugMessage("  snippet: " + matchSnippet)
 
                         if not matchSnippet == testStr:
@@ -200,22 +189,17 @@ class PyQe:
             self.executeCommand()
 
 
-
     def keyRelease(self, event):
-
         self.curr_command = self.eCommand.get()
 
         if not ((event.keysym == "Down") or (event.keysym == "Up")):
             self.matchCommand(self.curr_command)
 
 
-
     def matchCommand(self, commandName):
-
         globals()["matches"] = []
 
         for item in commands:
-
             # If .find returns 0, it means the user input matches from
             # the beginning of the command.
 
@@ -240,7 +224,6 @@ class PyQe:
             self.executeCommand()
 
 
-
     def executeCommand(self):
         idx = self.listbox.curselection()
         command = self.listbox.get(idx[0])
@@ -254,9 +237,7 @@ class PyQe:
         os.system(command)
 
 
-
 def readConfigFile():
-
     # Did the user specify his own config file?
     fileName = options.config
 
@@ -277,9 +258,7 @@ def readConfigFile():
     lines = file.readlines()
 
     for line in lines:
-
         # Skip comments and blank lines
-
         line = line.strip()
 
         if line.find("#") == -1 and line != "":
@@ -296,11 +275,9 @@ def readConfigFile():
     file.close()
 
 
-
 def debugMessage(message):
     if options.debug:
         print message
-
 
 
 def openGUI():
@@ -308,9 +285,7 @@ def openGUI():
     root.mainloop()
 
 
-
 def getPipe():
-
     if not hasattr(os, "mkfifo"):
         raise "mkfifo not supported. Listen mode not available."
 
@@ -319,7 +294,6 @@ def getPipe():
     home = os.getenv("HOME")
 
     if home:
-
         pipeName = home + "/.pyqepipe"
 
         # First, check if it already exist
@@ -368,28 +342,19 @@ readConfigFile()
 
 # Listen mode or normal startup and run once-mode?
 if options.listen:
-
     debugMessage("Listening...")
-
     debugMessage("Checking for named pipe...")
-
     keep_going = 1
-
     root = Tk()
-
     pyqe = PyQe(root)
 
     # Listen-loop
     while keep_going:
-
         pipe = getPipe()
-    
         debugMessage("Checking pipe...")
-        
         data = pipe.read()
 
         if data:
-
             debugMessage("command: " + data)
 
             if data.find("quit") == 0:
