@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cp pyqe /usr/local/bin/pyqe
+cp qpyqe /usr/local/bin/qpyqe
