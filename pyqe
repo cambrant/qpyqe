@@ -207,12 +207,11 @@ class PyQe:
         for item in commands:
             # If .find returns 0, it means the user input matches from
             # the beginning of the command.
-
-            if (item[0].find(commandName) == 0) or (commandName == ""):
+            if (item[0].lower().find(commandName.lower()) == 0) or (commandName == ""):
                 matches.append(item[0])
 
         # Clear listbox and insert matches
-        self.listbox.delete(0,END)
+        self.listbox.delete(0, END)
 
         for item in matches:
             self.listbox.insert(END, item)
