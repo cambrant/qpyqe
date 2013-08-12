@@ -2,15 +2,15 @@
 # -*- python -*-
 
 """
-pyqe.py - simple keyboard driven command launcher
+qpyqe.py - simple keyboard/mouse driven command launcher
 
 Copyright (C) 2005 Mathias Dahl
+Copyright (C) 2013 Tim Cambrant
 
-Version: 0.2.1
+Version: 0.1
 Keywords: keyboard, command, launcher
-Author: Mathias Dahl <mathias.rem0veth1s.dahl@gmail.com>
-Maintainer: Mathias Dahl
-URL: http://klibb.com/cgi-bin/wiki.pl/PyQe
+Author: Mathias Dahl <mathias.rem0veth1s.dahl@gmail.com>, Tim Cambrant <cambrant@gmail.com>
+Maintainer: Tim Cambrant
 
 This is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by
@@ -21,11 +21,6 @@ This is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GNU Emacs; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-MA 02111-1307, USA.
 
 Change history
 
@@ -47,12 +42,24 @@ Date        Sign     Comment
                      
                      The Tab-expansion now works... :)
 
+2013-08-12  Tim      Created a fork of PyQe called QPyQe
+
+                     Added mouse support to the interface
+
+                     Made the text search case insensitive
+
+                     Changed window formatting to contract around the text
+
+                     Added support for positioning the window at the
+                     position of the mouse cursor. This is now the default.
 """
 
 from Tkinter import *
 from optparse import OptionParser
 import os
 from Xlib import display
+
+VERSION = "0.1"
 
 class PyQe:
     def __init__(self, master):
@@ -74,7 +81,7 @@ class PyQe:
 
         self.frame.pack(fill = BOTH)
 
-        self.frame.master.title("PyQe 0.2.1")
+        self.frame.master.title("QPyQe " + VERSION)
 
         # Set width to 0 to limit the window according to listboxWidth
         self.eCommand = Entry(self.frame, width = 0)
