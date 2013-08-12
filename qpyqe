@@ -52,6 +52,12 @@ Date        Sign     Comment
 
                      Added support for positioning the window at the
                      position of the mouse cursor. This is now the default.
+
+                     Changed formatting of .qpyqerc to use : as a separator,
+                     allowing for spaces in the labels.
+
+                     Added option for displaying the search box, disabling
+                     it by default.
 """
 
 from Tkinter import *
@@ -64,6 +70,8 @@ VERSION = "0.1"
 class PyQe:
     def __init__(self, master):
         self.master = master
+
+        self.useEntry = options.entry
 
         # Startup position
         self.xpos = options.xpos
@@ -83,13 +91,14 @@ class PyQe:
 
         self.frame.master.title("QPyQe " + VERSION)
 
-        # Set width to 0 to limit the window according to listboxWidth
-        self.eCommand = Entry(self.frame, width = 0)
+        if self.useEntry:
+            # Set width to 0 to limit the window according to listboxWidth
+            self.eCommand = Entry(self.frame, width = 0, fg = "#ECCC9A", bg = "#000000")
 
-        self.eCommand.bind('<KeyPress>', self.keyPress)
-        self.eCommand.bind('<KeyRelease>', self.keyRelease)
+            self.eCommand.bind('<KeyPress>', self.keyPress)
+            self.eCommand.bind('<KeyRelease>', self.keyRelease)
 
-        self.eCommand.pack(side = "top", fill = X)
+            self.eCommand.pack(side = "top", fill = X)
 
         listboxHeight = options.height
 
@@ -108,12 +117,17 @@ class PyQe:
         self.listbox = Listbox(self.frame,
                                selectmode = SINGLE,
                                height = listboxHeight,
-                               width = listboxWidth)
+                               width = listboxWidth,
+                               fg = "#ECCC9A",
+                               bg = "#000000",
+                               selectforeground = "#ECCC9A",
+                               selectbackground = "#000000")
 
         self.listbox.bind('<<ListboxSelect>>', self.mouseClick)
         self.listbox.pack(side = "top", fill = BOTH, expand = 1)
 
-        self.eCommand.focus_set()
+        if self.useEntry:
+	       self.eCommand.focus_set()
 
         self.matchCommand("")
 
@@ -339,6 +353,7 @@ parser.add_option("-m", "--mousepos", action="store_true",     dest="mousepos", 
 parser.add_option("",   "--nosort", action="store_true",  dest="nosort", help="do not sort command list")
 parser.add_option("-c", "--config", action="store",       dest="config", help="use another config file than ~/.qpykerc")
 parser.add_option("-l", "--listen", action="store_true",  dest="listen", help="enable listening mode")
+parser.add_option("-e", "--entry", action="store_true",  dest="entry", help="enable the text entry")
 
 # Parse
 (options, args) = parser.parse_args()
