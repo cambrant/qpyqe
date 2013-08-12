@@ -273,8 +273,10 @@ def readConfigFile():
         line = line.strip()
 
         if line.find("#") == -1 and line != "":
-            pos = line.find(" ")
-            commands.append([line[0:pos], line[pos+1:]])
+            pos = line.find(":")
+            name = line[0:pos]
+            command = line[pos+1:]
+            commands.append([name, command])
 
     debugMessage("Read %d %s" % (len(commands),"commands."))
 
