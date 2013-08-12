@@ -67,6 +67,7 @@ class PyQe:
             self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
+        master.option_add("*Font", "monospace 10")
 
         self.frame = Frame(master)
 
