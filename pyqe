@@ -55,7 +55,6 @@ import os
 from Xlib import display
 
 class PyQe:
-
     def __init__(self, master):
         self.master = master
 
@@ -75,7 +74,8 @@ class PyQe:
 
         self.frame.master.title("PyQe 0.2.1")
 
-        self.eCommand = Entry(self.frame)
+        # Set width to 0 to limit the window according to listboxWidth
+        self.eCommand = Entry(self.frame, width = 0)
 
         self.eCommand.bind('<KeyPress>', self.keyPress)
         self.eCommand.bind('<KeyRelease>', self.keyRelease)
@@ -85,21 +85,24 @@ class PyQe:
         listboxHeight = options.height
 
         if not listboxHeight:
-            listboxHeight = 4
+            listboxHeight = len(commands)
 
         listboxWidth = options.width
 
         if not listboxWidth:
-            listboxWidth = 40
+            longest_command = 0
+            for line in commands:
+                if len(line[0]) > longest_command:
+                    longest_command = len(line[0])
+            listboxWidth = longest_command
 
         self.listbox = Listbox(self.frame,
                                selectmode = SINGLE,
                                height = listboxHeight,
                                width = listboxWidth)
 
-        self.listbox.pack(side = "top", fill = BOTH, expand = 1)
-
         self.listbox.bind('<<ListboxSelect>>', self.mouseClick)
+        self.listbox.pack(side = "top", fill = BOTH, expand = 1)
 
         self.eCommand.focus_set()
 
