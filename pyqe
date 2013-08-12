@@ -64,15 +64,9 @@ class PyQe:
         self.xpos = options.xpos
         self.ypos = options.ypos
 
-        if options.mousepos:
+        if options.mousepos or (not self.ypos and not self.ypos):
             pointer_data = display.Display().screen().root.query_pointer()._data
             self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
-
-        if not self.xpos:
-            self.xpos = 0
-
-        if not self.ypos:
-            self.ypos = 0
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
 
