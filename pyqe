@@ -68,6 +68,7 @@ class PyQe:
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
         master.option_add("*Font", "monospace 10")
+        master.resizable(0,0)
 
         self.frame = Frame(master)
 
