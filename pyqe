@@ -52,6 +52,7 @@ Date        Sign     Comment
 from Tkinter import *
 from optparse import OptionParser
 import os
+from Xlib import display
 
 class PyQe:
 
@@ -68,6 +69,10 @@ class PyQe:
 
         if not self.ypos:
             self.ypos = 0
+
+        if options.mousepos:
+            pointer_data = display.Display().screen().root.query_pointer()._data
+            self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
 
@@ -345,6 +350,7 @@ parser.add_option("",   "--height", action="store",       dest="height", help="l
 parser.add_option("",   "--width",  action="store",       dest="width",  help="list box width (in characters)")
 parser.add_option("-x", "--xpos",   action="store",       dest="xpos",   help="x startup position")
 parser.add_option("-y", "--ypos",   action="store",       dest="ypos",   help="y startup position")
+parser.add_option("-m", "--mousepos", action="store_true",     dest="mousepos", help="position window at mouse cursor")
 parser.add_option("",   "--nosort", action="store_true",  dest="nosort", help="do not sort command list")
 parser.add_option("-c", "--config", action="store",       dest="config", help="use another config file than ~/.pykerc")
 parser.add_option("-l", "--listen", action="store_true",  dest="listen", help="enable listening mode")
