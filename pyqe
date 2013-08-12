@@ -64,15 +64,15 @@ class PyQe:
         self.xpos = options.xpos
         self.ypos = options.ypos
 
+        if options.mousepos:
+            pointer_data = display.Display().screen().root.query_pointer()._data
+            self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
+
         if not self.xpos:
             self.xpos = 0
 
         if not self.ypos:
             self.ypos = 0
-
-        if options.mousepos:
-            pointer_data = display.Display().screen().root.query_pointer()._data
-            self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
 
@@ -106,11 +106,15 @@ class PyQe:
 
         self.listbox.pack(side = "top", fill = BOTH, expand = 1)
 
+        self.listbox.bind('<<ListboxSelect>>', self.mouseClick)
+
         self.eCommand.focus_set()
 
         self.matchCommand("")
 
 
+    def mouseClick(self, event):
+        self.executeCommand()
 
     def keyPress(self, event):
 
