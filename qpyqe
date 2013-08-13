@@ -67,7 +67,7 @@ from Xlib import display
 
 VERSION = "0.1"
 
-class PyQe:
+class QPyQe:
     def __init__(self, master):
         self.master = master
 
@@ -90,6 +90,8 @@ class PyQe:
         self.frame.pack(fill = BOTH)
 
         self.frame.master.title("QPyQe " + VERSION)
+
+        self.frame.master.bind('<FocusOut>', self.exit)
 
         if self.useEntry:
             # Set width to 0 to limit the window according to listboxWidth
@@ -131,6 +133,8 @@ class PyQe:
 
         self.matchCommand("")
 
+    def exit(self, event):
+        quit()
 
     def mouseClick(self, event):
         self.executeCommand()
@@ -374,7 +378,7 @@ if options.listen:
     debugMessage("Checking for named pipe...")
     keep_going = 1
     root = Tk()
-    pyqe = PyQe(root)
+    pyqe = QPyQe(root)
 
     # Listen-loop
     while keep_going:
@@ -400,7 +404,7 @@ if options.listen:
                 openGUI()
                 debugMessage("GUI done. Creating new root for next invocation...")
                 root = Tk()
-                pyqe = PyQe(root)
+                pyqe = QPyQe(root)
                 debugMessage("Done, GUI prepared.")
 
             else:
@@ -411,6 +415,6 @@ if options.listen:
 else:
     debugMessage("Normal startup mode")
     root = Tk()
-    pyqe = PyQe(root)
+    pyqe = QPyQe(root)
     openGUI()
 
