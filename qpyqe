@@ -22,42 +22,6 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 License for more details.
 
-Change history
-
-Date        Sign     Comment
-====        ====     =======
-2005-08-11  Mathias  Removed the suffixing of & and let the user handle
-                     that instead.
-                     Changed code to call destroy() before os.system().
-2005-08-15  Mathias  Added sorting of command list and command line
-                     option to disable it.
-2005-08-16  Mathias  Added expansion of commands starting with the same
-                     N characters when user press Tab.
-
-2005-10-22  Mathias  Added listen-mode for quicker invocations of GUI.
-
-2005-12-18  Mathias  Bug in listen mode made PyQe consume quite some CPU
-
-                     Added listen-mode command for reloading config file.
-                     
-                     The Tab-expansion now works... :)
-
-2013-08-12  Tim      Created a fork of PyQe called QPyQe
-
-                     Added mouse support to the interface
-
-                     Made the text search case insensitive
-
-                     Changed window formatting to contract around the text
-
-                     Added support for positioning the window at the
-                     position of the mouse cursor. This is now the default.
-
-                     Changed formatting of .qpyqerc to use : as a separator,
-                     allowing for spaces in the labels.
-
-                     Added option for displaying the search box, disabling
-                     it by default.
 """
 
 from Tkinter import *
