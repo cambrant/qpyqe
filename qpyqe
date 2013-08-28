@@ -21,7 +21,6 @@ This is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 License for more details.
-
 """
 
 from Tkinter import *
@@ -73,6 +72,7 @@ class QPyQe:
 
         listboxWidth = options.width
 
+		# Find out what window width to set, based on the command lengths.
         if not listboxWidth:
             longest_command = 0
             for line in commands:
@@ -224,6 +224,9 @@ class QPyQe:
         for item in commands:
             if item[0] == command:
                 command = item[1].strip()
+
+        if command[len(command) - 1] is not '&':
+            command = command + ' &'
 
         debugMessage("Command to execute: " + command)
         self.master.destroy()
