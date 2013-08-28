@@ -261,7 +261,7 @@ def readConfigFile():
             pos = line.find(":")
             name = line[0:pos]
             command = line[pos+1:]
-            commands.append([name, command])
+            commands.append([" " + name + " ", command])
 
     debugMessage("Read %d %s" % (len(commands),"commands."))
 
