@@ -45,14 +45,14 @@ class QPyQe:
             self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
-        master.option_add("*Font", "monospace 10")
+        master.option_add("*Font", "monospace 9")
         master.resizable(0,0)
 
         self.frame = Frame(master)
 
         self.frame.pack(fill = BOTH)
 
-        self.frame.master.title("QPyQe " + VERSION)
+        self.frame.master.title("QPyQe")
 
         self.frame.master.bind('<FocusOut>', self.exit)
 
