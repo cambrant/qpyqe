@@ -33,8 +33,6 @@ class QPyQe:
     def __init__(self, master):
         self.master = master
 
-        self.useEntry = options.entry
-
         # Startup position
         self.xpos = options.xpos
         self.ypos = options.ypos
@@ -55,6 +53,7 @@ class QPyQe:
 
         self.frame.master.bind('<FocusOut>', self.exit)
 
+        self.useEntry = options.entry
         if self.useEntry:
             # Set width to 0 to limit the window according to listboxWidth
             self.eCommand = Entry(self.frame, width = 0, fg = "#ECCC9A", bg = "#000000")
@@ -63,6 +62,8 @@ class QPyQe:
             self.eCommand.bind('<KeyRelease>', self.keyRelease)
 
             self.eCommand.pack(side = "top", fill = X)
+        else:
+            self.frame.master.bind('<KeyPress>', self.keyPress)
 
         listboxHeight = options.height
 
@@ -85,7 +86,7 @@ class QPyQe:
                                width = listboxWidth,
                                fg = "#ECCC9A",
                                bg = "#000000",
-                               selectforeground = "#ECCC9A",
+                               selectforeground = "#FFFFFF",
                                selectbackground = "#000000")
 
         self.listbox.bind('<<ListboxSelect>>', self.mouseClick)
@@ -103,43 +104,42 @@ class QPyQe:
         self.executeCommand()
 
     def keyPress(self, event):
-        if event.keysym == "Down":
-
+        if event.keysym == "Down" or (not self.useEntry and event.char == 'j'):
             listbox_size = self.listbox.size()
             listbox_maxpos = listbox_size - 1
 
             if self.curr_item < listbox_maxpos:
-                self.curr_item = self.curr_item + 1
+                self.curr_item += 1
             elif self.curr_item >= listbox_maxpos:
                 self.curr_item = 0
 
             self.listbox.activate(self.curr_item)
 
-            self.listbox.selection_clear(0,END)
+            self.listbox.selection_clear(0, END)
             self.listbox.selection_set(self.curr_item, self.curr_item)
 
             self.listbox.see(self.listbox.curselection())
 
-        elif event.keysym == "Up":
+        elif event.keysym == "Up" or (not self.useEntry and event.char == 'k'):
             listbox_size = self.listbox.size()
             listbox_maxpos = listbox_size - 1
 
             if self.curr_item > 0:
-                self.curr_item = self.curr_item - 1
+                self.curr_item -= 1
             elif self.curr_item <= 0:
                 self.curr_item = listbox_maxpos
 
             self.listbox.activate(self.curr_item)
 
-            self.listbox.selection_clear(0,END)
+            self.listbox.selection_clear(0, END)
             self.listbox.selection_set(self.curr_item, self.curr_item)
 
             self.listbox.see(self.listbox.curselection())
 
-        elif event.keysym == "Escape":
+        elif event.keysym == "Escape" or (not self.useEntry and event.char == 'q'):
             self.master.destroy()
 
-        elif event.keysym == "Tab":
+        elif event.keysym == "Tab" and self.useEntry:
             # Handle tab, send "break" back to stop the default action
             # to happen. In the future, maybe do something cool with
             # it...
