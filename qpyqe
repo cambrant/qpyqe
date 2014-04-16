@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- python -*-
 
 """
 qpyqe.py - simple keyboard/mouse driven command launcher
@@ -70,15 +69,15 @@ class QPyQe:
         if not listboxHeight:
             listboxHeight = len(commands)
 
-        listboxWidth = options.width
-
-		# Find out what window width to set, based on the command lengths.
-        if not listboxWidth:
+        if options.width:
+            listboxWidth = options.width
+        else:
+		    # Find out what window width to set, based on the command lengths.
             longest_command = 0
             for line in commands:
                 if len(line[0]) > longest_command:
                     longest_command = len(line[0])
-            listboxWidth = longest_command
+            listboxWidth = longest_command + 2
 
         self.listbox = Listbox(self.frame,
                                selectmode = SINGLE,
@@ -95,7 +94,7 @@ class QPyQe:
         if self.useEntry:
 	       self.eCommand.focus_set()
 
-        self.matchCommand("")
+        self.matchCommand('')
 
     def exit(self, event):
         quit()
@@ -196,14 +195,14 @@ class QPyQe:
         for item in commands:
             # If .find returns 0, it means the user input matches from
             # the beginning of the command.
-            if (item[0].lower().find(commandName.lower()) == 0) or (commandName == ""):
+            if not commandName or item[0].lower().find(commandName.lower()) == 0:
                 matches.append(item[0])
 
         # Clear listbox and insert matches
         self.listbox.delete(0, END)
 
         for item in matches:
-            self.listbox.insert(END, item)
+            self.listbox.insert(END, ' ' + item + ' ')
 
         self.curr_item = 0
 
@@ -219,25 +218,26 @@ class QPyQe:
 
     def executeCommand(self):
         idx = self.listbox.curselection()
-        command = self.listbox.get(idx[0])
+        selection = self.listbox.get(idx[0])
 
-        for item in commands:
-            if item[0] == command:
-                command = item[1].strip()
+        for name, command in commands:
+            if name == selection.strip():
+                selection = command
 
-        if command[len(command) - 1] is not '&':
-            command = command + ' &'
+        # Always run the command in the background, but allow the user to
+        # be explicit about it, for backwards compatibility.
+        if selection[-1] is not '&':
+            selection += ' &'
 
-        debugMessage("Command to execute: " + command)
+        debugMessage("Command to execute: " + selection)
         self.master.destroy()
-        os.system(command)
+        os.system(selection)
 
 
 def readConfigFile():
     # Did the user specify his own config file?
-    fileName = options.config
-
-    if fileName:
+    if options.config:
+        fileName = options.config
         debugMessage("Using config file " + fileName)
 
         try:
@@ -257,20 +257,17 @@ def readConfigFile():
         # Skip comments and blank lines
         line = line.strip()
 
-        if line.find("#") == -1 and line != "":
-            pos = line.find(":")
-            name = line[0:pos]
-            command = line[pos+1:]
-            commands.append([" " + name + " ", command])
+        if line and line[0] is not '#':
+            commands.append(line.split(':'))
 
-    debugMessage("Read %d %s" % (len(commands),"commands."))
+    file.close()
+
+    debugMessage("Read %d %s" % (len(commands), "commands."))
 
     # Shall we sort it?
     if not options.nosort:
         debugMessage("Sorting command list")
         commands.sort()
-
-    file.close()
 
 
 def debugMessage(message):
@@ -331,9 +328,6 @@ parser.add_option("-e", "--entry", action="store_true",  dest="entry", help="ena
 
 debugMessage("Debug enabled")
 
-# Parse
-(options, args) = parser.parse_args()
-
 commands = []
 matches = []
 
@@ -366,7 +360,7 @@ if options.listen:
                 # Clear list and re-read config
                 commands = []
                 readConfigFile()
-                
+
             elif data.find("open") == 0:
                 openGUI()
                 debugMessage("GUI done. Creating new root for next invocation...")
@@ -384,4 +378,3 @@ else:
     root = Tk()
     pyqe = QPyQe(root)
     openGUI()
-
