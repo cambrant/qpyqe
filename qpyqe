@@ -42,7 +42,7 @@ class QPyQe:
             self.xpos, self.ypos = pointer_data["root_x"], pointer_data["root_y"]
 
         self.master.geometry('+%s+%s' % (self.xpos, self.ypos))
-        master.option_add("*Font", "monospace 9")
+        master.option_add("*Font", "monospace 11")
         master.resizable(0,0)
 
         self.frame = Frame(master)
@@ -318,7 +318,7 @@ parser.add_option("",   "--width",  action="store",       dest="width",  help="l
 parser.add_option("-x", "--xpos",   action="store",       dest="xpos",   help="x startup position")
 parser.add_option("-y", "--ypos",   action="store",       dest="ypos",   help="y startup position")
 parser.add_option("-m", "--mousepos", action="store_true",     dest="mousepos", help="position window at mouse cursor")
-parser.add_option("",   "--nosort", action="store_true",  dest="nosort", help="do not sort command list")
+parser.add_option("-n",   "--nosort", action="store_true",  dest="nosort", help="do not sort command list")
 parser.add_option("-c", "--config", action="store",       dest="config", help="use another config file than ~/.qpykerc")
 parser.add_option("-l", "--listen", action="store_true",  dest="listen", help="enable listening mode")
 parser.add_option("-e", "--entry", action="store_true",  dest="entry", help="enable the text entry")
